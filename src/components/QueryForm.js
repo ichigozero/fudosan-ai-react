@@ -1,15 +1,14 @@
 /* eslint-disable require-jsdoc */
 
 import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
 
 import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+
+import PrefectureOptions from './PrefectureOptions';
 
 function QueryForm() {
   const [prefectures, setPrefectures] = useState([]);
-  const [modelId, setModelId] = useState('');
   const [formElements, setFormElements] = useState({});
 
   useEffect(() => {
@@ -25,14 +24,14 @@ function QueryForm() {
   }, []);
 
   const handlePrefectureChange = (event) => {
-    setModelId(event.target.value);
+    const value = event.target.value;
 
-    if (modelId === '') {
+    if (value === '') {
       setFormElements({});
       return;
     }
 
-    const uri = `/api/v1.0/form/${modelId}`;
+    const uri = `/api/v1.0/form/${value}`;
 
     fetch(uri)
         .then((response) => response.json())
@@ -57,7 +56,7 @@ function QueryForm() {
               />
             </Card.Body>
           </Card>
-          {!Object.keys(formElements).length &&
+          {Object.keys(formElements).length > 0 &&
             <Card className="mt-4">
               <Card.Header>ステップ２</Card.Header>
               <Card.Body>
@@ -69,42 +68,5 @@ function QueryForm() {
     </div>
   );
 }
-
-function PrefectureOptions({data, onChangeHandler}) {
-  const moreOptions = [];
-
-  data.map((prefecture, index) => {
-    const option = (
-      <option key={`prefecture-${index}`} value={prefecture.id}>
-        {prefecture.name}
-      </option>
-    );
-    moreOptions.push(option);
-  });
-
-  return (
-    <>
-      <Form.Row>
-        <Form.Group as={Col}>
-          <Form.Label>都道府県を選択</Form.Label>
-          <Form.Control
-            as="select"
-            name='prefecture'
-            defaultValue=""
-            onChange={onChangeHandler}
-          >
-            <option value=""></option>
-            {moreOptions}
-          </Form.Control>
-        </Form.Group>
-      </Form.Row>
-    </>
-  );
-}
-
-PrefectureOptions.propTypes = {
-  data: PropTypes.array,
-  onChangeHandler: PropTypes.func,
-};
 
 export default QueryForm;
