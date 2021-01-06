@@ -6,6 +6,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
 import PrefectureOptions from './PrefectureOptions';
+import PropertyOverview from './PropertyOverview';
 
 function QueryForm() {
   const [prefectures, setPrefectures] = useState([]);
@@ -60,6 +61,8 @@ function QueryForm() {
             <Card className="mt-4">
               <Card.Header>ステップ２</Card.Header>
               <Card.Body>
+                <Card.Title>物件概要</Card.Title>
+                <PropertyOverview/>
               </Card.Body>
             </Card>
           }
