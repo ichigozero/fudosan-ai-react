@@ -1,6 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types';
 
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -43,16 +44,10 @@ function QueryForm() {
       <Form>
         <Form.Row>
           <Form.Group as={Col}>
-            <Form.Label>都道府県</Form.Label>
-            <Form.Control
-              as="select"
-              name='prefecture'
-              defaultValue="都道府県を選択"
-              onChange={handlePrefectureChange}
-            >
-              <option value="">都道府県を選択</option>
-              <PrefectureOptions data={prefectures}/>
-            </Form.Control>
+            <PrefectureOptions
+              data={prefectures}
+              onChangeHandler={handlePrefectureChange}
+            />
           </Form.Group>
         </Form.Row>
       </Form>
@@ -60,8 +55,8 @@ function QueryForm() {
   );
 }
 
-function PrefectureOptions({data}) {
-  const options = [];
+function PrefectureOptions({data, onChangeHandler}) {
+  const moreOptions = [];
 
   data.map((prefecture, index) => {
     const option = (
@@ -69,10 +64,28 @@ function PrefectureOptions({data}) {
         {prefecture.name}
       </option>
     );
-    options.push(option);
+    moreOptions.push(option);
   });
 
-  return options;
+  return (
+    <>
+      <Form.Label>都道府県</Form.Label>
+      <Form.Control
+        as="select"
+        name='prefecture'
+        defaultValue="都道府県を選択"
+        onChange={onChangeHandler}
+      >
+        <option value="">都道府県を選択</option>
+        {moreOptions}
+      </Form.Control>
+    </>
+  );
 }
+
+PrefectureOptions.propTypes = {
+  data: PropTypes.array,
+  onChangeHandler: PropTypes.func,
+};
 
 export default QueryForm;
