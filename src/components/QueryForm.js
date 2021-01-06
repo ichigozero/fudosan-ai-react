@@ -3,11 +3,13 @@
 import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 
+import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 function QueryForm() {
   const [prefectures, setPrefectures] = useState([]);
+  const [modelId, setModelId] = useState('');
   const [formElements, setFormElements] = useState({});
 
   useEffect(() => {
@@ -23,9 +25,12 @@ function QueryForm() {
   }, []);
 
   const handlePrefectureChange = (event) => {
-    const modelId = event.target.value;
+    setModelId(event.target.value);
 
-    if (modelId === '') return;
+    if (modelId === '') {
+      setFormElements({});
+      return;
+    }
 
     const uri = `/api/v1.0/form/${modelId}`;
 
@@ -41,16 +46,26 @@ function QueryForm() {
 
   return (
     <div className="row">
-      <Form>
-        <Form.Row>
-          <Form.Group as={Col}>
-            <PrefectureOptions
-              data={prefectures}
-              onChangeHandler={handlePrefectureChange}
-            />
-          </Form.Group>
-        </Form.Row>
-      </Form>
+      <div className="col px-0">
+        <Form>
+          <Card>
+            <Card.Header>ステップ１</Card.Header>
+            <Card.Body>
+              <PrefectureOptions
+                data={prefectures}
+                onChangeHandler={handlePrefectureChange}
+              />
+            </Card.Body>
+          </Card>
+          {!Object.keys(formElements).length &&
+            <Card className="mt-4">
+              <Card.Header>ステップ２</Card.Header>
+              <Card.Body>
+              </Card.Body>
+            </Card>
+          }
+        </Form>
+      </div>
     </div>
   );
 }
@@ -69,16 +84,20 @@ function PrefectureOptions({data, onChangeHandler}) {
 
   return (
     <>
-      <Form.Label>都道府県</Form.Label>
-      <Form.Control
-        as="select"
-        name='prefecture'
-        defaultValue="都道府県を選択"
-        onChange={onChangeHandler}
-      >
-        <option value="">都道府県を選択</option>
-        {moreOptions}
-      </Form.Control>
+      <Form.Row>
+        <Form.Group as={Col}>
+          <Form.Label>都道府県を選択</Form.Label>
+          <Form.Control
+            as="select"
+            name='prefecture'
+            defaultValue=""
+            onChange={onChangeHandler}
+          >
+            <option value=""></option>
+            {moreOptions}
+          </Form.Control>
+        </Form.Group>
+      </Form.Row>
     </>
   );
 }
