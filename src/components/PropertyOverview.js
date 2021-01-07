@@ -26,6 +26,22 @@ function PropertyOverview() {
     return options;
   };
 
+  const accessOptions = () => {
+    const options = [];
+    const minMaxVal = formContext.data['dropdown_range']['access'];
+
+    for (let val=minMaxVal[0]; val <= minMaxVal[1]; val++) {
+      const option = (
+        <option key={`access-${val}`} value={val}>
+          {val}
+        </option>
+      );
+      options.push(option);
+    };
+
+    return options;
+  };
+
   return (
     <>
       <Form.Row>
@@ -46,6 +62,7 @@ function PropertyOverview() {
             name='access'
           >
             <option value=""></option>
+            {accessOptions()}
           </Form.Control>
         </Form.Group>
       </Form.Row>
