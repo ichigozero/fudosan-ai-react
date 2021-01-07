@@ -1,11 +1,15 @@
 /* eslint-disable require-jsdoc */
 
 import React, {useEffect, useState} from 'react';
+import '../css/QueryForm.css';
 
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
 import PrefectureOptions from './PrefectureOptions';
+import PropertyDetails from './PropertyDetails';
+import PropertyFacility from './PropertyFacility';
 import PropertyOverview from './PropertyOverview';
 
 function QueryForm() {
@@ -60,9 +64,27 @@ function QueryForm() {
           {Object.keys(formElements).length > 0 &&
             <Card className="mt-4">
               <Card.Header>ステップ２</Card.Header>
-              <Card.Body>
+              <Card.Body className="card-body-main">
                 <Card.Title>物件概要</Card.Title>
                 <PropertyOverview/>
+              </Card.Body>
+              <Card.Body className="card-body-main">
+                <Card.Title>物件詳細情報</Card.Title>
+                <PropertyDetails/>
+              </Card.Body>
+              <Card.Body className="card-body-main">
+                <Card.Title>物件の特徴・設備</Card.Title>
+                <PropertyFacility/>
+              </Card.Body>
+              <Card.Body>
+                <Button
+                  block
+                  variant="primary"
+                  size="lg"
+                  type="submit"
+                >
+                  送信する
+                </Button>
               </Card.Body>
             </Card>
           }
