@@ -11,6 +11,7 @@ function PropertyOverview() {
   const formContext = useContext(FormDataContext);
 
   const locationOptions = () => choiceOptions('location');
+  const roomLayoutOptions = () => choiceOptions('room_layout');
 
   const choiceOptions = (optionName) => {
     const choices = formContext.data['dropdown_choice'][optionName];
@@ -29,7 +30,8 @@ function PropertyOverview() {
     return options;
   };
 
-  const accessOptions = () => rangeOptions('access');
+  const accessOptions = () => rangeOptions('access', '分');
+  const roomSizeOptions = () => rangeOptions('room_size', 'm2', 10);
   const buildDateOptions = () => rangeOptions('build_date');
 
   const rangeOptions = (optionName, choiceSuffix='', step=1) => {
@@ -108,6 +110,7 @@ function PropertyOverview() {
             name='room-layout'
           >
             <option value=""></option>
+            {roomLayoutOptions()}
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
@@ -117,6 +120,7 @@ function PropertyOverview() {
             name='room-size'
           >
             <option value=""></option>
+            {roomSizeOptions()}
           </Form.Control>
         </Form.Group>
       </Form.Row>
