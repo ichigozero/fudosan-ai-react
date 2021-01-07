@@ -10,14 +10,17 @@ import {FormDataContext} from './QueryForm';
 function PropertyOverview() {
   const formContext = useContext(FormDataContext);
 
-  const locationOptions = () => {
-    const options = [];
-    const locations = formContext.data['dropdown_choice']['location'];
+  const locationOptions = () => choiceOptions('location');
 
-    locations.map((location, index) => {
+  const choiceOptions = (optionName) => {
+    const choices = formContext.data['dropdown_choice'][optionName];
+    const keyName = optionName.replace(/_/g, '-');
+    const options = [];
+
+    choices.map((choice, index) => {
       const option = (
-        <option key={`location-${index}`} value={location}>
-          {location}
+        <option key={`${keyName}-${index}`} value={choice}>
+          {choice}
         </option>
       );
       options.push(option);
@@ -29,19 +32,46 @@ function PropertyOverview() {
   const accessOptions = () => rangeOptions('access');
   const buildDateOptions = () => rangeOptions('build_date');
 
-  const rangeOptions = (optionName) => {
-    const minMaxVal = formContext.data['dropdown_range'][optionName];
+  const rangeOptions = (optionName, choiceSuffix='', step=1) => {
+    const [min, max] = formContext.data['dropdown_range'][optionName];
     const keyName = optionName.replace(/_/g, '-');
     const options = [];
 
-    for (let val=minMaxVal[0]; val <= minMaxVal[1]; val++) {
+    range(min, max, step).map((choice, index) => {
       const option = (
-        <option key={`${keyName}-${val}`} value={val}>
-          {val}
+        <option key={`${keyName}-${index}`} value={choice}>
+          {choice + choiceSuffix}
         </option>
       );
       options.push(option);
-    };
+    });
+
+    return options;
+  };
+
+  const floorNumberOptions = () => {
+    const [min, max] = formContext.data['dropdown_range']['floor_number'];
+    const options = [];
+
+    range(min, max)
+        .filter((val) => val !== 0 ? true : false)
+        .map((val, index) => {
+          let floorNumber = '';
+
+          if (val < 0) {
+            floorNumber = `地下${Math.abs(val)}階部分`;
+          } else {
+            floorNumber = `地上${val}階部分`;
+          }
+
+          const option = (
+            <option key={`floor-number-${index}`} value={val}>
+              {floorNumber}
+            </option>
+          );
+
+          options.push(option);
+        });
 
     return options;
   };
@@ -108,11 +138,19 @@ function PropertyOverview() {
             name='floor-number'
           >
             <option value=""></option>
+            {floorNumberOptions()}
           </Form.Control>
         </Form.Group>
       </Form.Row>
     </>
   );
 }
+
+const range = (start, stop, step=1) => {
+  return Array.from(
+      {length: (stop - start) / step + 1},
+      (_, i) => start + (i * step),
+  );
+};
 
 export default PropertyOverview;
