@@ -1,11 +1,31 @@
 /* eslint-disable require-jsdoc */
 
-import React from 'react';
+import React, {useContext} from 'react';
 
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
+import {FormDataContext} from './QueryForm';
+
 function PropertyOverview() {
+  const formContext = useContext(FormDataContext);
+
+  const locationOptions = () => {
+    const options = [];
+    const locations = formContext.data['dropdown_choice']['location'];
+
+    locations.map((location, index) => {
+      const option = (
+        <option key={`location-${index}`} value={location}>
+          {location}
+        </option>
+      );
+      options.push(option);
+    });
+
+    return options;
+  };
+
   return (
     <>
       <Form.Row>
@@ -16,6 +36,7 @@ function PropertyOverview() {
             name='location'
           >
             <option value=""></option>
+            {locationOptions()}
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
