@@ -6,53 +6,21 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 import {FormDataContext} from './QueryForm';
+import {choiceOptions, rangeOptions} from '../helpers/formPopulator';
 
 function PropertyOverview() {
   const formContext = useContext(FormDataContext);
+  const formData = formContext.data;
 
-  const locationOptions = () => choiceOptions('location');
-  const roomLayoutOptions = () => choiceOptions('room_layout');
+  const locationOptions = () => choiceOptions(formData, 'location');
+  const roomLayoutOptions = () => choiceOptions(formData, 'room_layout');
 
-  const choiceOptions = (optionName) => {
-    const choices = formContext.data['dropdown_choice'][optionName];
-    const keyName = optionName.replace(/_/g, '-');
-    const options = [];
-
-    choices.map((choice, index) => {
-      const option = (
-        <option key={`${keyName}-${index}`} value={choice}>
-          {choice}
-        </option>
-      );
-      options.push(option);
-    });
-
-    return options;
-  };
-
-  const accessOptions = () => rangeOptions('access', '分');
-  const roomSizeOptions = () => rangeOptions('room_size', 'm2', 10);
-  const buildDateOptions = () => rangeOptions('build_date');
-
-  const rangeOptions = (optionName, choiceSuffix='', step=1) => {
-    const [min, max] = formContext.data['dropdown_range'][optionName];
-    const keyName = optionName.replace(/_/g, '-');
-    const options = [];
-
-    range(min, max, step).map((choice, index) => {
-      const option = (
-        <option key={`${keyName}-${index}`} value={choice}>
-          {choice + choiceSuffix}
-        </option>
-      );
-      options.push(option);
-    });
-
-    return options;
-  };
+  const accessOptions = () => rangeOptions(formData, 'access', '分');
+  const roomSizeOptions = () => rangeOptions(formData, 'room_size', 'm2', 10);
+  const buildDateOptions = () => rangeOptions(formData, 'build_date');
 
   const floorNumberOptions = () => {
-    const [min, max] = formContext.data['dropdown_range']['floor_number'];
+    const [min, max] = formData['dropdown_range']['floor_number'];
     const options = [];
 
     range(min, max)
