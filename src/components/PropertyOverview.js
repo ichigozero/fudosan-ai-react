@@ -26,13 +26,17 @@ function PropertyOverview() {
     return options;
   };
 
-  const accessOptions = () => {
+  const accessOptions = () => rangeOptions('access');
+  const buildDateOptions = () => rangeOptions('build_date');
+
+  const rangeOptions = (optionName) => {
+    const minMaxVal = formContext.data['dropdown_range'][optionName];
+    const keyName = optionName.replace(/_/g, '-');
     const options = [];
-    const minMaxVal = formContext.data['dropdown_range']['access'];
 
     for (let val=minMaxVal[0]; val <= minMaxVal[1]; val++) {
       const option = (
-        <option key={`access-${val}`} value={val}>
+        <option key={`${keyName}-${val}`} value={val}>
           {val}
         </option>
       );
@@ -94,6 +98,7 @@ function PropertyOverview() {
             name='build-date'
           >
             <option value=""></option>
+            {buildDateOptions()}
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
