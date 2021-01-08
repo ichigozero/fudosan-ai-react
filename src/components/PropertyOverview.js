@@ -6,22 +6,20 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 import {FormDataContext} from './QueryForm';
-import {choiceOptions, rangeOptions} from '../helpers/formPopulator';
+import {
+  populateChoiceOptions,
+  populateRangeOptions,
+} from '../helpers/formPopulator';
+
 
 function PropertyOverview() {
   const formContext = useContext(FormDataContext);
   const formData = formContext.data;
 
-  const locationOptions = () => choiceOptions(formData, 'location');
-  const roomLayoutOptions = () => choiceOptions(formData, 'room_layout');
-
-  const accessOptions = () => rangeOptions(formData, 'access', '分');
-  const roomSizeOptions = () => rangeOptions(formData, 'room_size', 'm2', 10);
-  const buildDateOptions = () => rangeOptions(formData, 'build_date');
-
-  const floorNumberOptions = () => {
+  const populateFloorNumberOptions = () => {
     const [min, max] = formData['dropdown_range']['floor_number'];
-    const options = [];
+    const keyName = 'floor-number';
+    const options = [<option key={`${keyName}-0`} value=""></option>];
 
     range(min, max)
         .filter((val) => val !== 0 ? true : false)
@@ -35,7 +33,7 @@ function PropertyOverview() {
           }
 
           const option = (
-            <option key={`floor-number-${index}`} value={val}>
+            <option key={`${keyName}-${index + 1}`} value={val}>
               {floorNumber}
             </option>
           );
@@ -55,8 +53,7 @@ function PropertyOverview() {
             as="select"
             name='location'
           >
-            <option value=""></option>
-            {locationOptions()}
+            {populateChoiceOptions(formData, 'location')}
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
@@ -65,8 +62,7 @@ function PropertyOverview() {
             as="select"
             name='access'
           >
-            <option value=""></option>
-            {accessOptions()}
+            {populateRangeOptions(formData, 'access', '分')}
           </Form.Control>
         </Form.Group>
       </Form.Row>
@@ -77,8 +73,7 @@ function PropertyOverview() {
             as="select"
             name='room-layout'
           >
-            <option value=""></option>
-            {roomLayoutOptions()}
+            {populateChoiceOptions(formData, 'room_layout')}
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
@@ -87,8 +82,7 @@ function PropertyOverview() {
             as="select"
             name='room-size'
           >
-            <option value=""></option>
-            {roomSizeOptions()}
+            {populateRangeOptions(formData, 'room_size', 'm2', 10)}
           </Form.Control>
         </Form.Group>
       </Form.Row>
@@ -99,8 +93,7 @@ function PropertyOverview() {
             as="select"
             name='build-date'
           >
-            <option value=""></option>
-            {buildDateOptions()}
+            {populateRangeOptions(formData, 'build_date')}
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
@@ -109,8 +102,7 @@ function PropertyOverview() {
             as="select"
             name='floor-number'
           >
-            <option value=""></option>
-            {floorNumberOptions()}
+            {populateFloorNumberOptions()}
           </Form.Control>
         </Form.Group>
       </Form.Row>

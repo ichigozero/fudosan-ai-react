@@ -6,21 +6,14 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 import {FormDataContext} from './QueryForm';
-import {choiceOptions, rangeOptions} from '../helpers/formPopulator';
+import {
+  populateChoiceOptions,
+  populateRangeOptions,
+} from '../helpers/formPopulator';
 
 function PropertyDetails() {
   const formContext = useContext(FormDataContext);
   const formData = formContext.data;
-
-  const azimuthOptions = () => choiceOptions(formData, 'azimuth');
-  const buildingStructureOptions = () => {
-    return choiceOptions(formData, 'building_structure');
-  };
-  const categoryOptions = () => choiceOptions(formData, 'category');
-
-  const numberOfFloorOptions = () => {
-    return rangeOptions(formData, 'number_of_floors');
-  };
 
   return (
     <>
@@ -31,8 +24,7 @@ function PropertyDetails() {
             as="select"
             name='category'
           >
-            <option value=""></option>
-            {categoryOptions()}
+            {populateChoiceOptions(formData, 'category')}
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
@@ -41,8 +33,7 @@ function PropertyDetails() {
             as="select"
             name='number-of-floors'
           >
-            <option value=""></option>
-            {numberOfFloorOptions()}
+            {populateRangeOptions(formData, 'number_of_floors')}
           </Form.Control>
         </Form.Group>
       </Form.Row>
@@ -53,8 +44,7 @@ function PropertyDetails() {
             as="select"
             name='azimuth'
           >
-            <option value=""></option>
-            {azimuthOptions()}
+            {populateChoiceOptions(formData, 'azimuth')}
           </Form.Control>
         </Form.Group>
         <Form.Group as={Col}>
@@ -63,8 +53,7 @@ function PropertyDetails() {
             as="select"
             name='building-structure'
           >
-            <option value=""></option>
-            {buildingStructureOptions()}
+            {populateChoiceOptions(formData, 'building_structure')}
           </Form.Control>
         </Form.Group>
       </Form.Row>

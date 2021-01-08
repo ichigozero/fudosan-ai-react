@@ -22,16 +22,16 @@ const generateCheckboxes = (data, checkboxName) => {
   return checkboxes;
 };
 
-const choiceOptions = (data, optionName) => {
+const populateChoiceOptions = (data, optionName) => {
   const choices = data['dropdown_choice'][optionName];
   const keyName = optionName.replace(/_/g, '-');
-  const options = [];
+  const options = [<option key={`${keyName}-0`} value=""></option>];
 
   choices
       .filter((choice) => choice ? true : false)
       .map((choice, index) => {
         const option = (
-          <option key={`${keyName}-${index}`} value={choice}>
+          <option key={`${keyName}-${index + 1}`} value={choice}>
             {choice}
           </option>
         );
@@ -41,14 +41,14 @@ const choiceOptions = (data, optionName) => {
   return options;
 };
 
-const rangeOptions = (data, optionName, choiceSuffix='', step=1) => {
+const populateRangeOptions = (data, optionName, choiceSuffix='', step=1) => {
   const [min, max] = data['dropdown_range'][optionName];
   const keyName = optionName.replace(/_/g, '-');
-  const options = [];
+  const options = [<option key={`${keyName}-0`} value=""></option>];
 
   range(min, max, step).map((choice, index) => {
     const option = (
-      <option key={`${keyName}-${index}`} value={choice}>
+      <option key={`${keyName}-${index + 1}`} value={choice}>
         {choice + choiceSuffix}
       </option>
     );
@@ -65,4 +65,4 @@ const range = (start, stop, step=1) => {
   );
 };
 
-export {choiceOptions, generateCheckboxes, rangeOptions};
+export {populateChoiceOptions, generateCheckboxes, populateRangeOptions};
