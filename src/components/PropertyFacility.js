@@ -1,35 +1,24 @@
 /* eslint-disable require-jsdoc */
 
-import React from 'react';
+import React, {useContext} from 'react';
 
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
+import {FormDataContext} from './QueryForm';
+import {generateCheckboxes} from '../helpers/formPopulator';
+
 function PopularFacility() {
+  const formContext = useContext(FormDataContext);
+  const formData = formContext.data;
+
   return (
     <>
       <Form.Row>
         <Form.Group as={Col}>
           <Form.Label>人気の設備</Form.Label>
           <div>
-            <Form.Check
-              inline
-              type="checkbox"
-              name="popular-items"
-              label="default checkbox 1"
-            />
-            <Form.Check
-              inline
-              type="checkbox"
-              name="popular-items"
-              label="default checkbox 2"
-            />
-            <Form.Check
-              inline
-              type="checkbox"
-              name="popular-items"
-              label="default checkbox 3"
-            />
+            {generateCheckboxes(formData, 'popular_items')}
           </div>
         </Form.Group>
       </Form.Row>
@@ -37,24 +26,7 @@ function PopularFacility() {
         <Form.Group as={Col}>
           <Form.Label>おすすめの特徴・設備</Form.Label>
           <div>
-            <Form.Check
-              inline
-              type="checkbox"
-              name="features"
-              label="default checkbox 4"
-            />
-            <Form.Check
-              inline
-              type="checkbox"
-              name="features"
-              label="default checkbox 5"
-            />
-            <Form.Check
-              inline
-              type="checkbox"
-              name="features"
-              label="default checkbox 6"
-            />
+            {generateCheckboxes(formData, 'features')}
           </div>
         </Form.Group>
       </Form.Row>

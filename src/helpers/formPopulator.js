@@ -1,5 +1,27 @@
 import React from 'react';
 
+import Form from 'react-bootstrap/Form';
+
+const generateCheckboxes = (data, checkboxName) => {
+  const labels = data['checkbox'][checkboxName];
+  const checkboxes = [];
+
+  labels.map((label, index) => {
+    const checkbox = (
+      <Form.Check
+        inline
+        type="checkbox"
+        name={checkboxName.replace(/_/g, '-')}
+        label={label}
+        value={index}
+      />
+    );
+    checkboxes.push(checkbox);
+  });
+
+  return checkboxes;
+};
+
 const choiceOptions = (data, optionName) => {
   const choices = data['dropdown_choice'][optionName];
   const keyName = optionName.replace(/_/g, '-');
@@ -43,4 +65,4 @@ const range = (start, stop, step=1) => {
   );
 };
 
-export {choiceOptions, rangeOptions};
+export {choiceOptions, generateCheckboxes, rangeOptions};
