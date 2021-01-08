@@ -5,14 +5,16 @@ const choiceOptions = (data, optionName) => {
   const keyName = optionName.replace(/_/g, '-');
   const options = [];
 
-  choices.map((choice, index) => {
-    const option = (
-      <option key={`${keyName}-${index}`} value={choice}>
-        {choice}
-      </option>
-    );
-    options.push(option);
-  });
+  choices
+      .filter((choice) => choice ? true : false)
+      .map((choice, index) => {
+        const option = (
+          <option key={`${keyName}-${index}`} value={choice}>
+            {choice}
+          </option>
+        );
+        options.push(option);
+      });
 
   return options;
 };
