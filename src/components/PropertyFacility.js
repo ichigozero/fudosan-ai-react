@@ -8,7 +8,7 @@ import Form from 'react-bootstrap/Form';
 import {FormDataContext} from './QueryForm';
 import {generateCheckboxes} from '../helpers/formPopulator';
 
-function PopularFacility() {
+function PropertyFacility() {
   const formContext = useContext(FormDataContext);
   const formData = formContext.data;
 
@@ -34,4 +34,4 @@ function PopularFacility() {
   );
 }
 
-export default PopularFacility;
+export default PropertyFacility;

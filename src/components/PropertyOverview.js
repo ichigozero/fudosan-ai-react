@@ -2,19 +2,21 @@
 
 import React, {useContext} from 'react';
 
-import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
+import DropdownForm from './DropdownForm';
 import {FormDataContext} from './QueryForm';
 import {
   populateChoiceOptions,
   populateRangeOptions,
+  range,
 } from '../helpers/formPopulator';
 
 
 function PropertyOverview() {
   const formContext = useContext(FormDataContext);
   const formData = formContext.data;
+  const formSetter = formContext.setter;
 
   const populateFloorNumberOptions = () => {
     const [min, max] = formData['dropdown_range']['floor_number'];
@@ -44,77 +46,60 @@ function PropertyOverview() {
     return options;
   };
 
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    formSetter[name](value);
+  };
+
   return (
     <>
       <Form.Row>
-        <Form.Group as={Col}>
-          <Form.Label>所在地</Form.Label>
-          <Form.Control
-            as="select"
-            name='location'
-          >
-            {populateChoiceOptions(formData, 'location')}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group as={Col}>
-          <Form.Label>交通</Form.Label>
-          <Form.Control
-            as="select"
-            name='access'
-          >
-            {populateRangeOptions(formData, 'access', '分')}
-          </Form.Control>
-        </Form.Group>
+        <DropdownForm
+          label='所在地'
+          name='location'
+          handler={handleChange}
+          options={populateChoiceOptions(formData, 'location')}
+        />
+        <DropdownForm
+          label='交通'
+          name='access'
+          handler={handleChange}
+          options={populateRangeOptions(formData, 'access', '分')}
+        />
       </Form.Row>
       <Form.Row>
-        <Form.Group as={Col}>
-          <Form.Label>間取り</Form.Label>
-          <Form.Control
-            as="select"
-            name='room-layout'
-          >
-            {populateChoiceOptions(formData, 'room_layout')}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group as={Col}>
-          <Form.Label>専有面積</Form.Label>
-          <Form.Control
-            as="select"
-            name='room-size'
-          >
+        <DropdownForm
+          label='間取り'
+          name='room-layout'
+          handler={handleChange}
+          options={populateChoiceOptions(formData, 'room_layout')}
+        />
+        <DropdownForm
+          label='専有面積'
+          name='room-size'
+          handler={handleChange}
+          options=
             {populateRangeOptions(formData, 'room_size', 'm2', 10)}
-          </Form.Control>
-        </Form.Group>
+        />
       </Form.Row>
       <Form.Row>
-        <Form.Group as={Col}>
-          <Form.Label>築年</Form.Label>
-          <Form.Control
-            as="select"
-            name='build-date'
-          >
-            {populateRangeOptions(formData, 'build_date')}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group as={Col}>
-          <Form.Label>所在階</Form.Label>
-          <Form.Control
-            as="select"
-            name='floor-number'
-          >
-            {populateFloorNumberOptions()}
-          </Form.Control>
-        </Form.Group>
+        <DropdownForm
+          label='築年'
+          name='build-date'
+          handler={handleChange}
+          options={populateRangeOptions(formData, 'build_date')}
+        />
+        <DropdownForm
+          label='所在階'
+          name='build-date'
+          handler={handleChange}
+          options={populateFloorNumberOptions()}
+        />
       </Form.Row>
     </>
   );
 }
-
-const range = (start, stop, step=1) => {
-  return Array.from(
-      {length: (stop - start) / step + 1},
-      (_, i) => start + (i * step),
-  );
-};
 
 export default PropertyOverview;

@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 
 const generateCheckboxes = (data, checkboxName) => {
   const labels = data['checkbox'][checkboxName];
+  const keyName = checkboxName.replace(/_/g, '-');
   const checkboxes = [];
 
   labels.map((label, index) => {
@@ -11,6 +12,7 @@ const generateCheckboxes = (data, checkboxName) => {
       <Form.Check
         inline
         type="checkbox"
+        key={`${keyName}-${index}`}
         name={checkboxName.replace(/_/g, '-')}
         label={label}
         value={index}
@@ -65,4 +67,9 @@ const range = (start, stop, step=1) => {
   );
 };
 
-export {populateChoiceOptions, generateCheckboxes, populateRangeOptions};
+export {
+  generateCheckboxes,
+  populateChoiceOptions,
+  populateRangeOptions,
+  range,
+};

@@ -18,8 +18,15 @@ function QueryForm() {
   const [prefectures, setPrefectures] = useState([]);
   const [formData, setFormData] = useState({});
 
+  const [location, setLocation] = useState('');
+  const [access, setAccess] = useState('');
+
   const formContextValue = {
     data: formData,
+    setter: {
+      'location': (chosenChoice) => setLocation(chosenChoice),
+      'access': (chosenChoice) => setAccess(chosenChoice),
+    },
   };
 
   useEffect(() => {
@@ -53,10 +60,17 @@ function QueryForm() {
         });
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    console.log(location);
+    console.log(access);
+  };
+
   return (
     <div className="row">
       <div className="col px-0">
-        <Form>
+        <Form onSubmit={handleSubmit}>
           <Card>
             <Card.Header>ステップ１</Card.Header>
             <Card.Body>
