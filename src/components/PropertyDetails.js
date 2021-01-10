@@ -5,6 +5,7 @@ import React, {useContext} from 'react';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
+import DropdownForm from './DropdownForm';
 import {FormDataContext} from './QueryForm';
 import {
   populateChoiceOptions,
@@ -15,47 +16,38 @@ function PropertyDetails() {
   const formContext = useContext(FormDataContext);
   const formData = formContext.data;
 
+  const handleChange = () => {
+  };
+
   return (
     <>
       <Form.Row>
-        <Form.Group as={Col}>
-          <Form.Label>物件種目</Form.Label>
-          <Form.Control
-            as="select"
-            name='category'
-          >
-            {populateChoiceOptions(formData, 'category')}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group as={Col}>
-          <Form.Label>建物階</Form.Label>
-          <Form.Control
-            as="select"
-            name='number-of-floors'
-          >
-            {populateRangeOptions(formData, 'number_of_floors')}
-          </Form.Control>
-        </Form.Group>
+        <DropdownForm
+          label='物件種目'
+          name='category'
+          handler={handleChange}
+          options={populateChoiceOptions(formData, 'category')}
+        />
+        <DropdownForm
+          label='建物階'
+          name='number-of-floors'
+          handler={handleChange}
+          options={populateRangeOptions(formData, 'number_of_floors')}
+        />
       </Form.Row>
       <Form.Row>
-        <Form.Group as={Col}>
-          <Form.Label>方位</Form.Label>
-          <Form.Control
-            as="select"
-            name='azimuth'
-          >
-            {populateChoiceOptions(formData, 'azimuth')}
-          </Form.Control>
-        </Form.Group>
-        <Form.Group as={Col}>
-          <Form.Label>構造</Form.Label>
-          <Form.Control
-            as="select"
-            name='building-structure'
-          >
-            {populateChoiceOptions(formData, 'building_structure')}
-          </Form.Control>
-        </Form.Group>
+        <DropdownForm
+          label='方位'
+          name='azimuth'
+          handler={handleChange}
+          options={populateChoiceOptions(formData, 'azimuth')}
+        />
+        <DropdownForm
+          label='構造'
+          name='building-structure'
+          handler={handleChange}
+          options={populateChoiceOptions(formData, 'building_structure')}
+        />
       </Form.Row>
       {formData['radio_button'] &&
         formData['radio_button']['has_parking'] &&
