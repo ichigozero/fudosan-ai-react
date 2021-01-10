@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-import React, {createContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import '../css/QueryForm.css';
 
 import Button from 'react-bootstrap/Button';
@@ -12,22 +12,9 @@ import PropertyDetails from './PropertyDetails';
 import PropertyFacility from './PropertyFacility';
 import PropertyOverview from './PropertyOverview';
 
-const FormDataContext = createContext();
-
 function QueryForm() {
   const [prefectures, setPrefectures] = useState([]);
   const [formData, setFormData] = useState({});
-
-  const [location, setLocation] = useState('');
-  const [access, setAccess] = useState('');
-
-  const formContextValue = {
-    data: formData,
-    setter: {
-      'location': (chosenChoice) => setLocation(chosenChoice),
-      'access': (chosenChoice) => setAccess(chosenChoice),
-    },
-  };
 
   useEffect(() => {
     const uri = '/api/v1.0/prefectures';
@@ -62,9 +49,6 @@ function QueryForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    console.log(location);
-    console.log(access);
   };
 
   return (
@@ -83,20 +67,24 @@ function QueryForm() {
           {Object.keys(formData).length > 0 &&
             <Card className="mt-4">
               <Card.Header>ステップ２</Card.Header>
-              <FormDataContext.Provider value={formContextValue}>
-                <Card.Body className="card-body-main">
-                  <Card.Title>物件概要</Card.Title>
-                  <PropertyOverview/>
-                </Card.Body>
-                <Card.Body className="card-body-main">
-                  <Card.Title>物件詳細情報</Card.Title>
-                  <PropertyDetails/>
-                </Card.Body>
-                <Card.Body className="card-body-main">
-                  <Card.Title>物件の特徴・設備</Card.Title>
-                  <PropertyFacility/>
-                </Card.Body>
-              </FormDataContext.Provider>
+              <Card.Body className="card-body-main">
+                <Card.Title>物件概要</Card.Title>
+                <PropertyOverview
+                  data={formData}
+                />
+              </Card.Body>
+              <Card.Body className="card-body-main">
+                <Card.Title>物件詳細情報</Card.Title>
+                <PropertyDetails
+                  data={formData}
+                />
+              </Card.Body>
+              <Card.Body className="card-body-main">
+                <Card.Title>物件の特徴・設備</Card.Title>
+                <PropertyFacility
+                  data={formData}
+                />
+              </Card.Body>
               <Card.Body>
                 <Button
                   block
@@ -116,4 +104,3 @@ function QueryForm() {
 }
 
 export default QueryForm;
-export {FormDataContext};

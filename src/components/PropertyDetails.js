@@ -1,56 +1,46 @@
 /* eslint-disable require-jsdoc */
 
-import React, {useContext} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
 import DropdownForm from './DropdownForm';
-import {FormDataContext} from './QueryForm';
 import {
   populateChoiceOptions,
   populateRangeOptions,
 } from '../helpers/formPopulator';
 
-function PropertyDetails() {
-  const formContext = useContext(FormDataContext);
-  const formData = formContext.data;
-
-  const handleChange = () => {
-  };
-
+function PropertyDetails({data}) {
   return (
     <>
       <Form.Row>
         <DropdownForm
           label='物件種目'
           name='category'
-          handler={handleChange}
-          options={populateChoiceOptions(formData, 'category')}
+          options={populateChoiceOptions(data, 'category')}
         />
         <DropdownForm
           label='建物階'
           name='number-of-floors'
-          handler={handleChange}
-          options={populateRangeOptions(formData, 'number_of_floors')}
+          options={populateRangeOptions(data, 'number_of_floors')}
         />
       </Form.Row>
       <Form.Row>
         <DropdownForm
           label='方位'
           name='azimuth'
-          handler={handleChange}
-          options={populateChoiceOptions(formData, 'azimuth')}
+          options={populateChoiceOptions(data, 'azimuth')}
         />
         <DropdownForm
           label='構造'
           name='building-structure'
-          handler={handleChange}
-          options={populateChoiceOptions(formData, 'building_structure')}
+          options={populateChoiceOptions(data, 'building_structure')}
         />
       </Form.Row>
-      {formData['radio_button'] &&
-        formData['radio_button']['has_parking'] &&
+      {data['radio_button'] &&
+        data['radio_button']['has_parking'] &&
         <Form.Row>
           <Form.Group as={Col}>
             <Form.Label>駐車場</Form.Label>
@@ -76,5 +66,13 @@ function PropertyDetails() {
     </>
   );
 }
+
+PropertyDetails.propTypes = {
+  'data': PropTypes.shape({
+    'radio_button': PropTypes.shape({
+      'has_parking': PropTypes.array,
+    }),
+  }),
+};
 
 export default PropertyDetails;

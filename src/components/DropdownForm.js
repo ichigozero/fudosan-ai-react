@@ -8,7 +8,7 @@ const DropdownForm = ({label, name, handler, options}) => {
   return (
     <Form.Group as={Col}>
       <Form.Label>{label}</Form.Label>
-      <Form.Control as="select" name={name} onChange={handler}>
+      <Form.Control as="select" name={name}>
         {options}
       </Form.Control>
     </Form.Group>

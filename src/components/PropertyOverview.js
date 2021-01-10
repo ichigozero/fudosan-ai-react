@@ -1,11 +1,11 @@
 /* eslint-disable require-jsdoc */
 
-import React, {useContext} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import Form from 'react-bootstrap/Form';
 
 import DropdownForm from './DropdownForm';
-import {FormDataContext} from './QueryForm';
 import {
   populateChoiceOptions,
   populateRangeOptions,
@@ -13,13 +13,9 @@ import {
 } from '../helpers/formPopulator';
 
 
-function PropertyOverview() {
-  const formContext = useContext(FormDataContext);
-  const formData = formContext.data;
-  const formSetter = formContext.setter;
-
+function PropertyOverview({data}) {
   const populateFloorNumberOptions = () => {
-    const [min, max] = formData['dropdown_range']['floor_number'];
+    const [min, max] = data['dropdown_range']['floor_number'];
     const keyName = 'floor-number';
     const options = [<option key={`${keyName}-0`} value=""></option>];
 
@@ -59,29 +55,25 @@ function PropertyOverview() {
         <DropdownForm
           label='所在地'
           name='location'
-          handler={handleChange}
-          options={populateChoiceOptions(formData, 'location')}
+          options={populateChoiceOptions(data, 'location')}
         />
         <DropdownForm
           label='交通'
           name='access'
-          handler={handleChange}
-          options={populateRangeOptions(formData, 'access', '分')}
+          options={populateRangeOptions(data, 'access', '分')}
         />
       </Form.Row>
       <Form.Row>
         <DropdownForm
           label='間取り'
           name='room-layout'
-          handler={handleChange}
-          options={populateChoiceOptions(formData, 'room_layout')}
+          options={populateChoiceOptions(data, 'room_layout')}
         />
         <DropdownForm
           label='専有面積'
           name='room-size'
-          handler={handleChange}
           options=
-            {populateRangeOptions(formData, 'room_size', 'm2', 10)}
+            {populateRangeOptions(data, 'room_size', 'm2', 10)}
         />
       </Form.Row>
       <Form.Row>
@@ -89,7 +81,7 @@ function PropertyOverview() {
           label='築年'
           name='build-date'
           handler={handleChange}
-          options={populateRangeOptions(formData, 'build_date')}
+          options={populateRangeOptions(data, 'build_date')}
         />
         <DropdownForm
           label='所在階'
@@ -101,5 +93,13 @@ function PropertyOverview() {
     </>
   );
 }
+
+PropertyOverview.propTypes = {
+  'data': PropTypes.shape({
+    'dropdown_range': PropTypes.shape({
+      'floor_number': PropTypes.array,
+    }),
+  }),
+};
 
 export default PropertyOverview;
