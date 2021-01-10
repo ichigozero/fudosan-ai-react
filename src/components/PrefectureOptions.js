@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-function PrefectureOptions({data, onChangeHandler}) {
+function PrefectureOptions({data, setter}) {
   const moreOptions = [];
 
   data.map((prefecture, index) => {
@@ -18,6 +18,25 @@ function PrefectureOptions({data, onChangeHandler}) {
     moreOptions.push(option);
   });
 
+  const handleChange = (event) => {
+    const value = event.target.value;
+
+    if (value === '') {
+      setter({});
+      return;
+    }
+
+    const uri = `/api/v1.0/form/${value}`;
+
+    fetch(uri)
+        .then((response) => response.json())
+        .then((data) => {
+          if ('form' in data) {
+            setter(data.form);
+          }
+        });
+  };
+
   return (
     <>
       <Form.Row>
@@ -26,7 +45,7 @@ function PrefectureOptions({data, onChangeHandler}) {
           <Form.Control
             as="select"
             name='prefecture'
-            onChange={onChangeHandler}
+            onChange={handleChange}
           >
             <option value=""></option>
             {moreOptions}
@@ -39,7 +58,7 @@ function PrefectureOptions({data, onChangeHandler}) {
 
 PrefectureOptions.propTypes = {
   data: PropTypes.array,
-  onChangeHandler: PropTypes.func,
+  setter: PropTypes.func,
 };
 
 export default PrefectureOptions;

@@ -28,25 +28,6 @@ function QueryForm() {
         });
   }, []);
 
-  const handlePrefectureChange = (event) => {
-    const value = event.target.value;
-
-    if (value === '') {
-      setFormData({});
-      return;
-    }
-
-    const uri = `/api/v1.0/form/${value}`;
-
-    fetch(uri)
-        .then((response) => response.json())
-        .then((data) => {
-          if ('form' in data) {
-            setFormData(data.form);
-          }
-        });
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
   };
@@ -60,7 +41,7 @@ function QueryForm() {
             <Card.Body>
               <PrefectureOptions
                 data={prefectures}
-                onChangeHandler={handlePrefectureChange}
+                setter={(data) => setFormData(data)}
               />
             </Card.Body>
           </Card>
