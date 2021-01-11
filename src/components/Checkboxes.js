@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import Form from 'react-bootstrap/Form';
 
-function Checkboxes({data, checkboxName}) {
+function Checkboxes({data, checkboxName, customRefs}) {
   const labels = data['checkbox'][checkboxName];
   const keyName = checkboxName.replace(/_/g, '-');
   const checkboxes = [];
@@ -17,6 +17,7 @@ function Checkboxes({data, checkboxName}) {
         type="checkbox"
         key={`${keyName}-${index}`}
         name={checkboxName.replace(/_/g, '-')}
+        ref={(element) => customRefs.current.push(element)}
         label={label}
         value={index}
       />

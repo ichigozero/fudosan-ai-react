@@ -18,6 +18,7 @@ function QueryForm() {
 
   const overviewRef = createRef();
   const detailRef = createRef();
+  const facilityRef = createRef();
 
   useEffect(() => {
     const uri = '/api/v1.0/prefectures';
@@ -53,23 +54,15 @@ function QueryForm() {
               <Card.Header>ステップ２</Card.Header>
               <Card.Body className="card-body-main">
                 <Card.Title>物件概要</Card.Title>
-                <PropertyOverview
-                  data={formData}
-                  ref={overviewRef}
-                />
+                <PropertyOverview data={formData} ref={overviewRef}/>
               </Card.Body>
               <Card.Body className="card-body-main">
                 <Card.Title>物件詳細情報</Card.Title>
-                <PropertyDetails
-                  data={formData}
-                  ref={detailRef}
-                />
+                <PropertyDetails data={formData} ref={detailRef}/>
               </Card.Body>
               <Card.Body className="card-body-main">
                 <Card.Title>物件の特徴・設備</Card.Title>
-                <PropertyFacility
-                  data={formData}
-                />
+                <PropertyFacility data={formData} ref={facilityRef}/>
               </Card.Body>
               <Card.Body>
                 <Button
