@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-import React, {useEffect, useState} from 'react';
+import React, {createRef, useEffect, useState} from 'react';
 import '../css/QueryForm.css';
 
 import Button from 'react-bootstrap/Button';
@@ -15,6 +15,8 @@ import PropertyOverview from './PropertyOverview';
 function QueryForm() {
   const [prefectures, setPrefectures] = useState([]);
   const [formData, setFormData] = useState({});
+
+  const overviewRef = createRef();
 
   useEffect(() => {
     const uri = '/api/v1.0/prefectures';
@@ -52,6 +54,7 @@ function QueryForm() {
                 <Card.Title>物件概要</Card.Title>
                 <PropertyOverview
                   data={formData}
+                  ref={overviewRef}
                 />
               </Card.Body>
               <Card.Body className="card-body-main">
