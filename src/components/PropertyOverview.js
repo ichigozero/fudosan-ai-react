@@ -20,24 +20,12 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
   const floorNumberRef = useRef();
 
   useImperativeHandle(ref, () => ({
-    get location() {
-      return locationRef.current;
-    },
-    get access() {
-      return accessRef.current;
-    },
-    get roomLayout() {
-      return roomLayoutRef.current;
-    },
-    get roomSize() {
-      return roomSizeRef.current;
-    },
-    get buildDate() {
-      return buildDateRef.current;
-    },
-    get floorNumber() {
-      return floorNumberRef.current;
-    },
+    location: () => locationRef.current,
+    access: () => accessRef.current,
+    roomLayout: () => roomLayoutRef.current,
+    roomSize: () => roomSizeRef.current,
+    buildDate: () => buildDateRef.current,
+    floorNumber: () => floorNumberRef.current,
   }));
 
   return (

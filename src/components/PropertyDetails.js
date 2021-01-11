@@ -17,24 +17,12 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
   const hasNoParkingRef = useRef();
 
   useImperativeHandle(ref, () => ({
-    get category() {
-      return categoryRef.current;
-    },
-    get numberOfFloor() {
-      return numberOfFloorRef.current;
-    },
-    get azimuth() {
-      return azimuthRef.current;
-    },
-    get building() {
-      return buildingRef.current;
-    },
-    get hasParking() {
-      return hasParkingRef.current;
-    },
-    get hasNoParking() {
-      return hasNoParkingRef.current;
-    },
+    category: () => categoryRef.current,
+    numberOfFloor: () => numberOfFloorRef.current,
+    azimuth: () => azimuthRef.current,
+    building: () => buildingRef.current,
+    hasParking: () => hasParkingRef.current,
+    hasNoParking: () => hasNoParkingRef.current,
   }));
 
   return (
