@@ -5,23 +5,44 @@ import PropTypes from 'prop-types';
 
 import Form from 'react-bootstrap/Form';
 
-function Checkboxes({data, checkboxName, customRefs}) {
+function Checkboxes({
+  data,
+  checkboxName,
+  customRefs,
+  sharedOptions,
+  onChangeHandler,
+}) {
   const labels = data['checkbox'][checkboxName];
   const keyName = checkboxName.replace(/_/g, '-');
   const checkboxes = [];
 
   labels.map((label, index) => {
-    const checkbox = (
-      <Form.Check
-        inline
-        type="checkbox"
-        key={`${keyName}-${index}`}
-        name={checkboxName.replace(/_/g, '-')}
-        ref={(element) => customRefs.current.push(element)}
-        label={label}
-        value={index}
-      />
-    );
+    const checkbox = label in sharedOptions ?
+      (
+        <Form.Check
+          inline
+          type="checkbox"
+          key={`${keyName}-${index}`}
+          name={checkboxName.replace(/_/g, '-')}
+          checked={sharedOptions[label]}
+          ref={(element) => customRefs.current.push(element)}
+          label={label}
+          value={index}
+          onChange={onChangeHandler}
+        />
+      ) :
+      (
+        <Form.Check
+          inline
+          type="checkbox"
+          key={`${keyName}-${index}`}
+          name={checkboxName.replace(/_/g, '-')}
+          ref={(element) => customRefs.current.push(element)}
+          label={label}
+          value={index}
+        />
+      );
+
     checkboxes.push(checkbox);
   });
 
@@ -31,6 +52,8 @@ function Checkboxes({data, checkboxName, customRefs}) {
 Checkboxes.propTypes = {
   data: PropTypes.object,
   checkboxName: PropTypes.string,
+  customRefs: PropTypes.object,
+  onChangeHandler: PropTypes.func,
 };
 
 export default Checkboxes;

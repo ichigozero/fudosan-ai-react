@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 
-import React, {useImperativeHandle, useRef} from 'react';
+import React, {useImperativeHandle, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import Col from 'react-bootstrap/Col';
@@ -12,10 +12,32 @@ const PropertyFacility = React.forwardRef(({data}, ref) => {
   const popularItemRefs = useRef([]);
   const featureRefs = useRef([]);
 
+  const sharedOptionStates = getSharedOptionDefaultStates(
+      data['checkbox']['popular_items'],
+      data['checkbox']['features'],
+  );
+  const [sharedOptions, setSharedOptions] = useState(sharedOptionStates);
+
   useImperativeHandle(ref, () => ({
     popularItems: (index) => popularItemRefs.current[index],
     features: (index) => featureRefs.current[index],
   }));
+
+  const handleClick = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    const label = name === 'popular-items' ?
+      data['checkbox']['popular_items'][value] :
+      data['checkbox']['features'][value];
+
+    if (label in sharedOptions) {
+      setSharedOptions({
+        ...sharedOptions,
+        [label]: !sharedOptions[label],
+      });
+    }
+  };
 
   return (
     <>
@@ -27,6 +49,8 @@ const PropertyFacility = React.forwardRef(({data}, ref) => {
               data={data}
               checkboxName='popular_items'
               customRefs={popularItemRefs}
+              sharedOptions={sharedOptions}
+              onChangeHandler={handleClick}
             />
           </div>
         </Form.Group>
@@ -39,6 +63,8 @@ const PropertyFacility = React.forwardRef(({data}, ref) => {
               data={data}
               checkboxName='features'
               customRefs={featureRefs}
+              sharedOptions={sharedOptions}
+              onChangeHandler={handleClick}
             />
           </div>
         </Form.Group>
@@ -50,6 +76,16 @@ const PropertyFacility = React.forwardRef(({data}, ref) => {
 PropertyFacility.displayName = 'PropertyFacility';
 PropertyFacility.propTypes = {
   data: PropTypes.object,
+};
+
+const getSharedOptionDefaultStates = (popularItems, features) => {
+  const states = {};
+
+  popularItems.map((item) => {
+    if (features.includes(item)) states[item] = false;
+  });
+
+  return states;
 };
 
 export default PropertyFacility;
