@@ -17,6 +17,7 @@ function QueryForm() {
   const [formData, setFormData] = useState({});
 
   const overviewRef = createRef();
+  const detailRef = createRef();
 
   useEffect(() => {
     const uri = '/api/v1.0/prefectures';
@@ -61,6 +62,7 @@ function QueryForm() {
                 <Card.Title>物件詳細情報</Card.Title>
                 <PropertyDetails
                   data={formData}
+                  ref={detailRef}
                 />
               </Card.Body>
               <Card.Body className="card-body-main">
