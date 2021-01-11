@@ -5,13 +5,11 @@ import PropTypes from 'prop-types';
 
 import Form from 'react-bootstrap/Form';
 
-import DropdownForm from './DropdownForm';
-import {
-  populateChoiceOptions,
-  populateRangeOptions,
-  range,
-} from '../helpers/formPopulator';
-
+import DropdownForm, {
+  ChoiceOptions,
+  RangeOptions,
+  FloorNumberOptions,
+} from './DropdownForm';
 
 const PropertyOverview = React.forwardRef(({data}, ref) => {
   const locationRef = useRef();
@@ -42,34 +40,6 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
     },
   }));
 
-  const populateFloorNumberOptions = () => {
-    const [min, max] = data['dropdown_range']['floor_number'];
-    const keyName = 'floor-number';
-    const options = [<option key={`${keyName}-0`} value=""></option>];
-
-    range(min, max)
-        .filter((val) => val !== 0 ? true : false)
-        .map((val, index) => {
-          let floorNumber = '';
-
-          if (val < 0) {
-            floorNumber = `地下${Math.abs(val)}階部分`;
-          } else {
-            floorNumber = `地上${val}階部分`;
-          }
-
-          const option = (
-            <option key={`${keyName}-${index + 1}`} value={val}>
-              {floorNumber}
-            </option>
-          );
-
-          options.push(option);
-        });
-
-    return options;
-  };
-
   return (
     <>
       <Form.Row>
@@ -77,13 +47,19 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
           label='所在地'
           name='location'
           customRef={locationRef}
-          options={populateChoiceOptions(data, 'location')}
+          Options={<ChoiceOptions data={data} optionName='location'/>}
         />
         <DropdownForm
           label='交通'
           name='access'
           customRef={accessRef}
-          options={populateRangeOptions(data, 'access', '分')}
+          Options={
+            <RangeOptions
+              data={data}
+              optionName='access'
+              choiceSuffix='分'
+            />
+          }
         />
       </Form.Row>
       <Form.Row>
@@ -91,14 +67,20 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
           label='間取り'
           name='room-layout'
           customRef={roomLayoutRef}
-          options={populateChoiceOptions(data, 'room_layout')}
+          Options={<ChoiceOptions data={data} optionName='room_layout'/>}
         />
         <DropdownForm
           label='専有面積'
           name='room-size'
           customRef={roomSizeRef}
-          options=
-            {populateRangeOptions(data, 'room_size', 'm2', 10)}
+          Options={
+            <RangeOptions
+              data={data}
+              optionName='room_size'
+              choiceSuffix='m2'
+              step={10}
+            />
+          }
         />
       </Form.Row>
       <Form.Row>
@@ -106,13 +88,13 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
           label='築年'
           name='build-date'
           customRef={buildDateRef}
-          options={populateRangeOptions(data, 'build_date')}
+          Options={<RangeOptions data={data} optionName='build_date'/>}
         />
         <DropdownForm
           label='所在階'
           name='floor-number'
           customRef={floorNumberRef}
-          options={populateFloorNumberOptions()}
+          Options={<FloorNumberOptions data={data}/>}
         />
       </Form.Row>
     </>

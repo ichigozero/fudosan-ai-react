@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-import {generateCheckboxes} from '../helpers/formPopulator';
+import Checkboxes from './Checkboxes';
 
 function PropertyFacility({data}) {
   return (
@@ -15,7 +15,7 @@ function PropertyFacility({data}) {
         <Form.Group as={Col}>
           <Form.Label>人気の設備</Form.Label>
           <div>
-            {generateCheckboxes(data, 'popular_items')}
+            <Checkboxes data={data} checkboxName='popular_items'/>
           </div>
         </Form.Group>
       </Form.Row>
@@ -23,7 +23,7 @@ function PropertyFacility({data}) {
         <Form.Group as={Col}>
           <Form.Label>おすすめの特徴・設備</Form.Label>
           <div>
-            {generateCheckboxes(data, 'features')}
+            <Checkboxes data={data} checkboxName='features'/>
           </div>
         </Form.Group>
       </Form.Row>

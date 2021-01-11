@@ -6,11 +6,7 @@ import PropTypes from 'prop-types';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-import DropdownForm from './DropdownForm';
-import {
-  populateChoiceOptions,
-  populateRangeOptions,
-} from '../helpers/formPopulator';
+import DropdownForm, {ChoiceOptions, RangeOptions} from './DropdownForm';
 
 const PropertyDetails = React.forwardRef(({data}, ref) => {
   const categoryRef = useRef();
@@ -48,13 +44,13 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
           label='物件種目'
           name='category'
           customRef={categoryRef}
-          options={populateChoiceOptions(data, 'category')}
+          Options={<ChoiceOptions data={data} optionName='category'/>}
         />
         <DropdownForm
           label='建物階'
           name='number-of-floors'
           customRef={numberOfFloorRef}
-          options={populateRangeOptions(data, 'number_of_floors')}
+          Options={<RangeOptions data={data} optionName='number_of_floors'/>}
         />
       </Form.Row>
       <Form.Row>
@@ -62,13 +58,13 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
           label='方位'
           name='azimuth'
           customRef={azimuthRef}
-          options={populateChoiceOptions(data, 'azimuth')}
+          Options={<ChoiceOptions data={data} optionName='azimuth'/>}
         />
         <DropdownForm
           label='構造'
           name='building-structure'
           customRef={buildingRef}
-          options={populateChoiceOptions(data, 'building_structure')}
+          Options={<ChoiceOptions data={data} optionName='building_structure'/>}
         />
       </Form.Row>
       {data['radio_button'] &&
