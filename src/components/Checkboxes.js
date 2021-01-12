@@ -25,7 +25,7 @@ function Checkboxes({
           key={`${keyName}-${index}`}
           name={checkboxName.replace(/_/g, '-')}
           checked={sharedOptions[label]}
-          ref={(element) => customRefs.current.push(element)}
+          ref={customRefs.current[index]}
           label={label}
           value={index}
           onChange={onChangeHandler}
@@ -37,7 +37,7 @@ function Checkboxes({
           type="checkbox"
           key={`${keyName}-${index}`}
           name={checkboxName.replace(/_/g, '-')}
-          ref={(element) => customRefs.current.push(element)}
+          ref={customRefs.current[index]}
           label={label}
           value={index}
         />

@@ -9,8 +9,15 @@ import Form from 'react-bootstrap/Form';
 import Checkboxes from './Checkboxes';
 
 const PropertyFacility = React.forwardRef(({data}, ref) => {
-  const popularItemRefs = useRef([]);
-  const featureRefs = useRef([]);
+  const popularItemCount = data['checkbox']['popular_items'].length;
+  const featureCount = data['checkbox']['features'].length;
+
+  const popularItemRefs = useRef(
+      [...Array(popularItemCount)].map(() => React.createRef()),
+  );
+  const featureRefs = useRef(
+      [...Array(featureCount)].map(() => React.createRef()),
+  );
 
   const sharedOptionStates = getSharedOptionDefaultStates(
       data['checkbox']['popular_items'],
@@ -19,8 +26,8 @@ const PropertyFacility = React.forwardRef(({data}, ref) => {
   const [sharedOptions, setSharedOptions] = useState(sharedOptionStates);
 
   useImperativeHandle(ref, () => ({
-    popularItems: (index) => popularItemRefs.current[index],
-    features: (index) => featureRefs.current[index],
+    popularItems: () => getCheckboxValues(popularItemRefs),
+    features: () => getCheckboxValues(featureRefs),
   }));
 
   const handleClick = (event) => {
@@ -86,6 +93,16 @@ const getSharedOptionDefaultStates = (popularItems, features) => {
   });
 
   return states;
+};
+
+const getCheckboxValues = (checkboxRefs) => {
+  const values = [];
+
+  checkboxRefs.current.map((element) => {
+    values.push(element.current.checked ? 1 : 0);
+  });
+
+  return values;
 };
 
 export default PropertyFacility;

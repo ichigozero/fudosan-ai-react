@@ -55,32 +55,30 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
           Options={<ChoiceOptions data={data} optionName='building_structure'/>}
         />
       </Form.Row>
-      {data['radio_button'] &&
-        data['radio_button']['has_parking'] &&
-        <Form.Row>
-          <Form.Group as={Col}>
-            <Form.Label>駐車場</Form.Label>
-            <div>
-              <Form.Check
-                inline
-                type="radio"
-                name="has-parking"
-                ref={hasParkingRef}
-                label="あり"
-                value="1"
-              />
-              <Form.Check
-                inline
-                type="radio"
-                name="has-parking"
-                ref={hasNoParkingRef}
-                label="なし"
-                value="0"
-              />
-            </div>
-          </Form.Group>
-        </Form.Row>
-      }
+      <Form.Row>
+        <Form.Group as={Col}>
+          <Form.Label>駐車場</Form.Label>
+          <div>
+            <Form.Check
+              inline
+              type="radio"
+              name="has-parking"
+              ref={hasParkingRef}
+              label="あり"
+              value="1"
+            />
+            <Form.Check
+              inline
+              defaultChecked
+              type="radio"
+              name="has-parking"
+              ref={hasNoParkingRef}
+              label="なし"
+              value="0"
+            />
+          </div>
+        </Form.Group>
+      </Form.Row>
     </>
   );
 });
