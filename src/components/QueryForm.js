@@ -51,7 +51,13 @@ function QueryForm() {
       ...detailRef.current.building(),
     ];
 
-    console.log(modelValues);
+    const modelId = formData.modelId;
+    const stringifiedValues = modelValues.join('&val=');
+    const uri = `api/v1.0/model/${modelId}/rent-price?val=${stringifiedValues}`;
+
+    fetch(uri)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
   };
 
   return (
