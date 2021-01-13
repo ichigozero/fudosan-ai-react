@@ -24,16 +24,16 @@ DropdownForm.propTypes = {
   Options: PropTypes.object,
 };
 
-function ChoiceOptions({data, optionName}) {
+function MandatoryChoiceOptions({data, optionName}) {
   const choices = data['dropdown_choice'][optionName];
   const keyName = optionName.replace(/_/g, '-');
-  const options = [<option key={`${keyName}-0`} value=""></option>];
+  const options = [<option key={`${keyName}`} value=""></option>];
 
   choices
       .filter((choice) => choice ? true : false)
       .map((choice, index) => {
         const option = (
-          <option key={`${keyName}-${index + 1}`} value={choice}>
+          <option key={`${keyName}-${index}`} value={index}>
             {choice}
           </option>
         );
@@ -43,10 +43,34 @@ function ChoiceOptions({data, optionName}) {
   return options;
 }
 
-ChoiceOptions.propTypes = {
+MandatoryChoiceOptions.propTypes = {
   data: PropTypes.object,
   optionName: PropTypes.string,
 };
+
+function OptionalChoiceOptions({data, optionName}) {
+  const choices = data['dropdown_choice'][optionName];
+  const keyName = optionName.replace(/_/g, '-');
+  const options = [<option key={`${keyName}-0`} value="0"></option>];
+
+  choices
+      .filter((choice) => choice ? true : false)
+      .map((choice, index) => {
+        const option = (
+          <option key={`${keyName}-${index + 1}`} value={index + 1}>
+            {choice}
+          </option>
+        );
+        options.push(option);
+      });
+
+  return options;
+}
+OptionalChoiceOptions.propTypes = {
+  data: PropTypes.object,
+  optionName: PropTypes.string,
+};
+
 
 function RangeOptions({data, optionName, choiceSuffix='', step=1}) {
   const [min, max] = data['dropdown_range'][optionName];
@@ -112,4 +136,9 @@ function range(start, stop, step=1) {
 }
 
 export default DropdownForm;
-export {ChoiceOptions, RangeOptions, FloorNumberOptions};
+export {
+  MandatoryChoiceOptions,
+  OptionalChoiceOptions,
+  RangeOptions,
+  FloorNumberOptions,
+};

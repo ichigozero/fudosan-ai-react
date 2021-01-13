@@ -6,10 +6,12 @@ import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 
 import DropdownForm, {
-  ChoiceOptions,
+  MandatoryChoiceOptions,
   RangeOptions,
   FloorNumberOptions,
 } from './DropdownForm';
+
+import {choiceValueToArray} from '../helpers/util';
 
 const PropertyOverview = React.forwardRef(({data}, ref) => {
   const locationRef = useRef();
@@ -20,12 +22,18 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
   const floorNumberRef = useRef();
 
   useImperativeHandle(ref, () => ({
-    location: () => locationRef.current,
-    access: () => accessRef.current,
-    roomLayout: () => roomLayoutRef.current,
-    roomSize: () => roomSizeRef.current,
-    buildDate: () => buildDateRef.current,
-    floorNumber: () => floorNumberRef.current,
+    location: () => choiceValueToArray(
+        data['dropdown_choice']['location'].length,
+        locationRef,
+    ),
+    access: () => accessRef.current.value,
+    roomLayout: () => choiceValueToArray(
+        data['dropdown_choice']['room_layout'].length,
+        roomLayoutRef,
+    ),
+    roomSize: () => roomSizeRef.current.value,
+    buildDate: () => buildDateRef.current.value,
+    floorNumber: () => floorNumberRef.current.value,
   }));
 
   return (
@@ -35,7 +43,7 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
           label='所在地'
           name='location'
           customRef={locationRef}
-          Options={<ChoiceOptions data={data} optionName='location'/>}
+          Options={<MandatoryChoiceOptions data={data} optionName='location'/>}
         />
         <DropdownForm
           label='交通'
@@ -55,7 +63,9 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
           label='間取り'
           name='room-layout'
           customRef={roomLayoutRef}
-          Options={<ChoiceOptions data={data} optionName='room_layout'/>}
+          Options={
+            <MandatoryChoiceOptions data={data} optionName='room_layout'/>
+          }
         />
         <DropdownForm
           label='専有面積'
@@ -92,8 +102,9 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
 PropertyOverview.displayName = 'PropertyOverview';
 PropertyOverview.propTypes = {
   'data': PropTypes.shape({
-    'dropdown_range': PropTypes.shape({
-      'floor_number': PropTypes.array,
+    'dropdown_choice': PropTypes.shape({
+      'location': PropTypes.array,
+      'room_layout': PropTypes.array,
     }),
   }),
 };

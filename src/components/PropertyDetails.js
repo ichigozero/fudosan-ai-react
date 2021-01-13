@@ -6,7 +6,13 @@ import PropTypes from 'prop-types';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-import DropdownForm, {ChoiceOptions, RangeOptions} from './DropdownForm';
+import DropdownForm, {
+  MandatoryChoiceOptions,
+  OptionalChoiceOptions,
+  RangeOptions,
+} from './DropdownForm';
+
+import {choiceValueToArray} from '../helpers/util';
 
 const PropertyDetails = React.forwardRef(({data}, ref) => {
   const categoryRef = useRef();
@@ -17,12 +23,21 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
   const hasNoParkingRef = useRef();
 
   useImperativeHandle(ref, () => ({
-    category: () => categoryRef.current,
-    numberOfFloor: () => numberOfFloorRef.current,
-    azimuth: () => azimuthRef.current,
-    building: () => buildingRef.current,
-    hasParking: () => hasParkingRef.current,
-    hasNoParking: () => hasNoParkingRef.current,
+    category: () => choiceValueToArray(
+        data['dropdown_choice']['category'].length,
+        categoryRef,
+    ),
+    numberOfFloor: () => numberOfFloorRef.current.value,
+    azimuth: () => choiceValueToArray(
+        data['dropdown_choice']['azimuth'].length,
+        azimuthRef,
+    ),
+    building: () => choiceValueToArray(
+        data['dropdown_choice']['building_structure'].length,
+        buildingRef,
+    ),
+    hasParking: () => hasParkingRef.current.checked ? 1 : 0,
+    hasNoParking: () => hasNoParkingRef.current.checked ? 1 : 0,
   }));
 
   return (
@@ -32,7 +47,7 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
           label='物件種目'
           name='category'
           customRef={categoryRef}
-          Options={<ChoiceOptions data={data} optionName='category'/>}
+          Options={<MandatoryChoiceOptions data={data} optionName='category'/>}
         />
         <DropdownForm
           label='建物階'
@@ -46,13 +61,18 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
           label='方位'
           name='azimuth'
           customRef={azimuthRef}
-          Options={<ChoiceOptions data={data} optionName='azimuth'/>}
+          Options={<OptionalChoiceOptions data={data} optionName='azimuth'/>}
         />
         <DropdownForm
           label='構造'
           name='building-structure'
           customRef={buildingRef}
-          Options={<ChoiceOptions data={data} optionName='building_structure'/>}
+          Options={
+            <MandatoryChoiceOptions
+              data={data}
+              optionName='building_structure'
+            />
+          }
         />
       </Form.Row>
       <Form.Row>
@@ -86,6 +106,11 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
 PropertyDetails.displayName = 'PropertyDetails';
 PropertyDetails.propTypes = {
   'data': PropTypes.shape({
+    'dropdown_choice': PropTypes.shape({
+      'category': PropTypes.array,
+      'azimuth': PropTypes.array,
+      'building_structure': PropTypes.array,
+    }),
     'radio_button': PropTypes.shape({
       'has_parking': PropTypes.array,
     }),

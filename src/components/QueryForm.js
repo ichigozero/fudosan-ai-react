@@ -34,6 +34,24 @@ function QueryForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const modelValues = [
+      overviewRef.current.access(),
+      overviewRef.current.buildDate(),
+      overviewRef.current.roomSize(),
+      overviewRef.current.floorNumber(),
+      detailRef.current.numberOfFloor(),
+      detailRef.current.hasParking(),
+      ...facilityRef.current.popularItems(),
+      ...facilityRef.current.features(),
+      ...overviewRef.current.location(),
+      ...overviewRef.current.roomLayout(),
+      ...detailRef.current.category(),
+      ...detailRef.current.azimuth(),
+      ...detailRef.current.building(),
+    ];
+
+    console.log(modelValues);
   };
 
   return (
