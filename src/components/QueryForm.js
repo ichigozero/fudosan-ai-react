@@ -3,6 +3,7 @@
 import React, {createRef, useEffect, useState} from 'react';
 import '../css/QueryForm.css';
 
+import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -62,7 +63,12 @@ function QueryForm() {
       setFormValidation(newFormValidation);
     }
 
-    if (!Object.values(newFormValidation).every(Boolean)) return;
+    if (!Object.values(newFormValidation).every(Boolean)) {
+      if (formData.rentPrice.length > 0) {
+        setFormData({...formData, rentPrice: []});
+      }
+      return null;
+    }
 
     const modelValues = [
       overviewRef.current.access(),
@@ -145,14 +151,15 @@ function QueryForm() {
               </Card.Body>
             </Card>
           }
-          {Array.isArray(rentPrice) && rentPrice.length > 0 &&
+          {rentPrice.length > 0 ?
             <Card className="mt-4">
               <Card.Header>推定価格</Card.Header>
               <Card.Body>
                 {parseFloat(rentPrice[0].toFixed(2)).toLocaleString() + ' 〜 ' +
                  parseFloat(rentPrice[1].toFixed(2)).toLocaleString() + ' 円'}
               </Card.Body>
-            </Card>
+            </Card> :
+            <Alert className="mt-4" variant="danger">エラーが発生しました！</Alert>
           }
         </Form>
       </div>

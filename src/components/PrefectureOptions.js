@@ -32,7 +32,7 @@ function PrefectureOptions({data, setter}) {
         .then((response) => response.json())
         .then((data) => {
           if ('form' in data) {
-            setter({...data.form, modelId: value});
+            setter({...data.form, modelId: value, rentPrice: []});
           }
         });
   };
