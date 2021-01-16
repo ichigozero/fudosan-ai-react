@@ -15,6 +15,17 @@ import PropertyOverview from './PropertyOverview';
 function QueryForm() {
   const [prefectures, setPrefectures] = useState([]);
   const [formData, setFormData] = useState({});
+  const [formValidation, setFormValidation] = useState({
+    location: true,
+    access: true,
+    roomLayout: true,
+    roomSize: true,
+    buildDate: true,
+    floorNumber: true,
+    category: true,
+    numberOfFloor: true,
+    building: true,
+  });
 
   const overviewRef = createRef();
   const detailRef = createRef();
@@ -34,6 +45,24 @@ function QueryForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    const newFormValidation = {
+      location: overviewRef.current.location().length > 0 ? true : false,
+      access: overviewRef.current.access() !== '' ? true : false,
+      roomLayout: overviewRef.current.roomLayout().length > 0 ? true : false,
+      roomSize: overviewRef.current.roomSize() !== '' ? true : false,
+      buildDate: overviewRef.current.buildDate() !== '' ? true : false,
+      floorNumber: overviewRef.current.floorNumber() !== '' ? true : false,
+      category: detailRef.current.category().length > 0 ? true : false,
+      numberOfFloor: detailRef.current.numberOfFloor() !== '' ? true : false,
+      building: detailRef.current.building().length > 0 ? true : false,
+    };
+
+    if (JSON.stringify(formValidation) !== JSON.stringify(newFormValidation)) {
+      setFormValidation(newFormValidation);
+    }
+
+    if (!Object.values(newFormValidation).every(Boolean)) return;
 
     const modelValues = [
       overviewRef.current.access(),
@@ -86,11 +115,19 @@ function QueryForm() {
               <Card.Header>ステップ２</Card.Header>
               <Card.Body className="card-body-main">
                 <Card.Title>物件概要</Card.Title>
-                <PropertyOverview data={formData} ref={overviewRef}/>
+                <PropertyOverview
+                  data={formData}
+                  formValidation={formValidation}
+                  ref={overviewRef}
+                />
               </Card.Body>
               <Card.Body className="card-body-main">
                 <Card.Title>物件詳細情報</Card.Title>
-                <PropertyDetails data={formData} ref={detailRef}/>
+                <PropertyDetails
+                  data={formData}
+                  formValidation={formValidation}
+                  ref={detailRef}
+                />
               </Card.Body>
               <Card.Body className="card-body-main">
                 <Card.Title>物件の特徴・設備</Card.Title>

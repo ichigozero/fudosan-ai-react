@@ -13,7 +13,7 @@ import DropdownForm, {
 
 import {choiceValueToArray} from '../helpers/util';
 
-const PropertyOverview = React.forwardRef(({data}, ref) => {
+const PropertyOverview = React.forwardRef(({data, formValidation}, ref) => {
   const locationRef = useRef();
   const accessRef = useRef();
   const roomLayoutRef = useRef();
@@ -43,12 +43,14 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
           label='所在地'
           name='location'
           customRef={locationRef}
+          isInvalid={!formValidation.location}
           Options={<MandatoryChoiceOptions data={data} optionName='location'/>}
         />
         <DropdownForm
           label='交通'
           name='access'
           customRef={accessRef}
+          isInvalid={!formValidation.access}
           Options={
             <RangeOptions
               data={data}
@@ -63,6 +65,7 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
           label='間取り'
           name='room-layout'
           customRef={roomLayoutRef}
+          isInvalid={!formValidation.roomLayout}
           Options={
             <MandatoryChoiceOptions data={data} optionName='room_layout'/>
           }
@@ -71,6 +74,7 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
           label='専有面積'
           name='room-size'
           customRef={roomSizeRef}
+          isInvalid={!formValidation.roomSize}
           Options={
             <RangeOptions
               data={data}
@@ -86,12 +90,14 @@ const PropertyOverview = React.forwardRef(({data}, ref) => {
           label='築年'
           name='build-date'
           customRef={buildDateRef}
+          isInvalid={!formValidation.buildDate}
           Options={<RangeOptions data={data} optionName='build_date'/>}
         />
         <DropdownForm
           label='所在階'
           name='floor-number'
           customRef={floorNumberRef}
+          isInvalid={!formValidation.floorNumber}
           Options={<FloorNumberOptions data={data}/>}
         />
       </Form.Row>
@@ -107,6 +113,7 @@ PropertyOverview.propTypes = {
       'room_layout': PropTypes.array,
     }),
   }),
+  'formValidation': PropTypes.object,
 };
 
 export default PropertyOverview;

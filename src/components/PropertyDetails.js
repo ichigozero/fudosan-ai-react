@@ -14,7 +14,7 @@ import DropdownForm, {
 
 import {choiceValueToArray} from '../helpers/util';
 
-const PropertyDetails = React.forwardRef(({data}, ref) => {
+const PropertyDetails = React.forwardRef(({data, formValidation}, ref) => {
   const categoryRef = useRef();
   const numberOfFloorRef = useRef();
   const azimuthRef = useRef();
@@ -47,12 +47,14 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
           label='物件種目'
           name='category'
           customRef={categoryRef}
+          isInvalid={!formValidation.category}
           Options={<MandatoryChoiceOptions data={data} optionName='category'/>}
         />
         <DropdownForm
           label='建物階'
           name='number-of-floors'
           customRef={numberOfFloorRef}
+          isInvalid={!formValidation.numberOfFloor}
           Options={<RangeOptions data={data} optionName='number_of_floors'/>}
         />
       </Form.Row>
@@ -61,12 +63,14 @@ const PropertyDetails = React.forwardRef(({data}, ref) => {
           label='方位'
           name='azimuth'
           customRef={azimuthRef}
+          isInvalid={false}
           Options={<OptionalChoiceOptions data={data} optionName='azimuth'/>}
         />
         <DropdownForm
           label='構造'
           name='building-structure'
           customRef={buildingRef}
+          isInvalid={!formValidation.building}
           Options={
             <MandatoryChoiceOptions
               data={data}
@@ -115,6 +119,7 @@ PropertyDetails.propTypes = {
       'has_parking': PropTypes.array,
     }),
   }),
+  'formValidation': PropTypes.object,
 };
 
 export default PropertyDetails;

@@ -6,11 +6,16 @@ import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 
-function DropdownForm({label, name, customRef, Options}) {
+function DropdownForm({label, name, customRef, isInvalid, Options}) {
   return (
     <Form.Group as={Col}>
       <Form.Label>{label}</Form.Label>
-      <Form.Control as="select" name={name} ref={customRef}>
+      <Form.Control
+        as="select"
+        name={name}
+        ref={customRef}
+        isInvalid={isInvalid}
+      >
         {Options}
       </Form.Control>
     </Form.Group>
@@ -21,6 +26,7 @@ DropdownForm.propTypes = {
   label: PropTypes.string,
   name: PropTypes.string,
   customRef: PropTypes.object,
+  isInvalid: PropTypes.bool,
   Options: PropTypes.object,
 };
 
