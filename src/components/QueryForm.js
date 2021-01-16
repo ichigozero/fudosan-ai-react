@@ -57,8 +57,16 @@ function QueryForm() {
 
     fetch(uri)
         .then((response) => response.json())
-        .then((data) => console.log(data));
+        .then((data) => {
+          const {price, 'mean_error': meanError} = data.result;
+          setFormData({
+            ...formData,
+            rentPrice: [price - meanError, price + meanError],
+          });
+        });
   };
+
+  const {rentPrice} = formData;
 
   return (
     <div className="row">
@@ -97,6 +105,15 @@ function QueryForm() {
                 >
                   送信する
                 </Button>
+              </Card.Body>
+            </Card>
+          }
+          {Array.isArray(rentPrice) && rentPrice.length > 0 &&
+            <Card className="mt-4">
+              <Card.Header>推定価格</Card.Header>
+              <Card.Body>
+                {parseFloat(rentPrice[0].toFixed(2)).toLocaleString() + ' 〜 ' +
+                 parseFloat(rentPrice[1].toFixed(2)).toLocaleString() + ' 円'}
               </Card.Body>
             </Card>
           }
