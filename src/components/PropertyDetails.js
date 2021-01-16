@@ -55,7 +55,14 @@ const PropertyDetails = React.forwardRef(({data, formValidation}, ref) => {
           name='number-of-floors'
           customRef={numberOfFloorRef}
           isInvalid={!formValidation.numberOfFloor}
-          Options={<RangeOptions data={data} optionName='number_of_floors'/>}
+          Options={
+            <RangeOptions
+              data={data}
+              optionName='number_of_floors'
+              choicePrefix='地上'
+              choiceSuffix='階建て'
+            />
+          }
         />
       </Form.Row>
       <Form.Row>

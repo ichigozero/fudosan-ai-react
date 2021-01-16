@@ -78,7 +78,13 @@ OptionalChoiceOptions.propTypes = {
 };
 
 
-function RangeOptions({data, optionName, choiceSuffix='', step=1}) {
+function RangeOptions({
+  data,
+  optionName,
+  choicePrefix='',
+  choiceSuffix='',
+  step=1,
+}) {
   const [min, max] = data['dropdown_range'][optionName];
   const keyName = optionName.replace(/_/g, '-');
   const options = [<option key={`${keyName}-0`} value=""></option>];
@@ -86,7 +92,7 @@ function RangeOptions({data, optionName, choiceSuffix='', step=1}) {
   range(min, max, step).map((choice, index) => {
     const option = (
       <option key={`${keyName}-${index + 1}`} value={choice}>
-        {choice + choiceSuffix}
+        {choicePrefix + choice + choiceSuffix}
       </option>
     );
     options.push(option);
