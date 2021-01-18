@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 
-function PrefectureOptions({data, setter}) {
+function PrefectureOptions({data, setFormData, setFormValidation}) {
   const moreOptions = [];
 
   data.map((prefecture, index) => {
@@ -22,7 +22,8 @@ function PrefectureOptions({data, setter}) {
     const value = event.target.value;
 
     if (value === '') {
-      setter({});
+      setFormValidation();
+      setFormData({});
       return;
     }
 
@@ -32,7 +33,8 @@ function PrefectureOptions({data, setter}) {
         .then((response) => response.json())
         .then((data) => {
           if ('form' in data) {
-            setter({
+            setFormValidation();
+            setFormData({
               ...data.form,
               modelId: value,
               showAlert: false,
@@ -63,7 +65,8 @@ function PrefectureOptions({data, setter}) {
 
 PrefectureOptions.propTypes = {
   data: PropTypes.array,
-  setter: PropTypes.func,
+  setFormData: PropTypes.func,
+  setFormValidation: PropTypes.func,
 };
 
 export default PrefectureOptions;

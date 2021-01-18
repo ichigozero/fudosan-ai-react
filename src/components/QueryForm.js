@@ -115,7 +115,15 @@ function QueryForm() {
             <Card.Body>
               <PrefectureOptions
                 data={prefectures}
-                setter={(data) => setFormData(data)}
+                setFormData={(data) => setFormData(data)}
+                setFormValidation={() => {
+                  const newFormValidation = {...formValidation};
+
+                  Object.keys(newFormValidation).forEach(
+                      (key) => newFormValidation[key] = true,
+                  );
+                  setFormValidation({...newFormValidation});
+                }}
               />
             </Card.Body>
           </Card>
