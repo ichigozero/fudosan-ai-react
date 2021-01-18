@@ -64,9 +64,10 @@ function QueryForm() {
     }
 
     if (!Object.values(newFormValidation).every(Boolean)) {
-      if (formData.rentPrice.length > 0) {
-        setFormData({...formData, rentPrice: []});
+      if (!formData.showAlert) {
+        setFormData({...formData, rentPrice: [], showAlert: true});
       }
+
       return null;
     }
 
@@ -96,12 +97,13 @@ function QueryForm() {
           const {price, 'mean_error': meanError} = data.result;
           setFormData({
             ...formData,
+            showAlert: false,
             rentPrice: [price - meanError, price + meanError],
           });
         });
   };
 
-  const {rentPrice} = formData;
+  const {showAlert, rentPrice} = formData;
 
   return (
     <div className="row">
@@ -151,14 +153,16 @@ function QueryForm() {
               </Card.Body>
             </Card>
           }
-          {rentPrice.length > 0 ?
+          {Array.isArray(rentPrice) && rentPrice.length > 0 &&
             <Card className="mt-4">
               <Card.Header>推定価格</Card.Header>
               <Card.Body>
                 {parseFloat(rentPrice[0].toFixed(2)).toLocaleString() + ' 〜 ' +
                  parseFloat(rentPrice[1].toFixed(2)).toLocaleString() + ' 円'}
               </Card.Body>
-            </Card> :
+            </Card>
+          }
+          {showAlert !== undefined && showAlert &&
             <Alert className="mt-4" variant="danger">エラーが発生しました！</Alert>
           }
         </Form>
