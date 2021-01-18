@@ -80,7 +80,7 @@ const PropertyOverview = React.forwardRef(({data, formValidation}, ref) => {
               data={data}
               optionName='room_size'
               choiceSuffix='m2'
-              step={10}
+              step={5}
             />
           }
         />
