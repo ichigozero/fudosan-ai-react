@@ -33,7 +33,7 @@ function QueryForm() {
   const facilityRef = createRef();
 
   useEffect(() => {
-    const uri = '/api/v1.0/prefectures';
+    const uri = '/fudosan-ai/api/v1.0/prefectures';
 
     fetch(uri)
         .then((response) => response.json())
@@ -89,7 +89,8 @@ function QueryForm() {
 
     const modelId = formData.modelId;
     const stringifiedValues = modelValues.join('&val=');
-    const uri = `api/v1.0/model/${modelId}/rent-price?val=${stringifiedValues}`;
+    const uri = '/fudosan-ai/api/v1.0' +
+      `/model/${modelId}/rent-price?val=${stringifiedValues}`;
 
     fetch(uri)
         .then((response) => response.json())

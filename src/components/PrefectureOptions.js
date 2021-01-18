@@ -26,7 +26,7 @@ function PrefectureOptions({data, setter}) {
       return;
     }
 
-    const uri = `/api/v1.0/form/${value}`;
+    const uri = `/fudosan-ai/api/v1.0/form/${value}`;
 
     fetch(uri)
         .then((response) => response.json())
