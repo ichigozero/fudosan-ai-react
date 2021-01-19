@@ -1,2 +1,2 @@
-# fudosan-ai-react
-fudosan-ai-react
+# About
+Japanese real estate price predictor app.
