@@ -4,6 +4,9 @@ Japanese real estate price predictor app.
 # Requirements
 This web application has been tested in environment with
 the following configuration:
+- Python 3.7.3
+- Node.js v12.20.1
+- Nginx v1.14.2
 
 # Installation
 1. Clone this repo
