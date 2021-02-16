@@ -26,27 +26,27 @@ the following configuration:
 
 4. Install required packages for Flask backend
 
-    ```bash
-    $ pip3 install .
-    ```
+   ```bash
+   $ pip3 install .
+   ```
 
 5. Import and analyze real estate CSV data
 
-    ```bash
-    $ flask cli analyze-rent-data [OPTIONS] CSV_PATH PREFECTURE_NAME
-    ```
+   ```bash
+   $ flask cli analyze-rent-data [OPTIONS] CSV_PATH PREFECTURE_NAME
+   ```
 
-    Run the following command to import `rent_東京部.csv` of Tokyo prefecture.
+   Run the following command to import `rent_東京部.csv` of Tokyo prefecture.
 
-    ```bash
-    $ flask cli analyze-rent-data rent_東京部.csv 東京部
-    ```
+   ```bash
+   $ flask cli analyze-rent-data rent_東京部.csv 東京部
+   ```
 
 6. Build React app
 
-    ```bash
-    cd .. && $ npm build
-    ```
+   ```bash
+   $ cd .. && npm build
+   ```
 
 7. Create systemd service
 
@@ -56,54 +56,54 @@ the following configuration:
 
 8. Add the following into fudosan-ai.service file.
 
-    ```
-    [Unit]
-    Description=fudosan-ai
-    After=network.target
+   ```
+   [Unit]
+   Description=fudosan-ai
+   After=network.target
 
-    [Service]
-    User=ubuntu
-    WorkingDirectory=/home/ubuntu/fudosan-ai-react/api
-    ExecStart=/home/ubuntu/fudosan-ai-react/api/venv/bin/gunicorn -b 127.0.0.1:5002 "app:create_app()"
-    Restart=always
+   [Service]
+   User=ubuntu
+   WorkingDirectory=/home/ubuntu/fudosan-ai-react/api
+   ExecStart=/home/ubuntu/fudosan-ai-react/api/venv/bin/gunicorn -b 127.0.0.1:5002 "app:create_app()"
+   Restart=always
 
-    [Install]
-    WantedBy=multi-user.target
-    ```
+   [Install]
+   WantedBy=multi-user.target
+   ```
 
 9. Configure Nginx
 
-    Edit `etc/nginx/sites-enabled/default`
+   Edit `etc/nginx/sites-enabled/default`
 
-    ```
-    server {
-        listen 80;
+   ```
+   server {
+       listen 80;
 
-        location /fudosan-ai {
-            alias /home/ubuntu/fudosan-ai-react/build;
-            index index.html;
-            try_files $uri $uri/ /fudosan-ai/index.html;
-        }
+       location /fudosan-ai {
+           alias /home/ubuntu/fudosan-ai-react/build;
+           index index.html;
+           try_files $uri $uri/ /fudosan-ai/index.html;
+       }
 
-        location /fudosan-ai/api {
-            include proxy_params;
-            proxy_pass http://localhost:5002;
-        }
-    }
-    ```
+       location /fudosan-ai/api {
+           include proxy_params;
+           proxy_pass http://localhost:5002;
+       }
+   }
+   ```
 
 10. Reload systemd and start fudosan-ai service
 
-   ```bash
-   $ sudo systemctl daemon-reload
-   $ sudo systemctl start fudosan-ai
-   ```
+    ```bash
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl start fudosan-ai
+    ```
 
 11. (Optional) Verify that fudosan-ai service is running
 
-   ```bash
-   $ sudo systemctl status fudosan-ai
-   ```
+    ```bash
+    $ sudo systemctl status fudosan-ai
+    ```
 
 12. Reload nginx
 
